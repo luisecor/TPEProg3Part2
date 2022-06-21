@@ -1,4 +1,4 @@
-package Grafo;
+package Generos;
 
 public class GrafoNoDirigido extends GrafoDirigido {
 

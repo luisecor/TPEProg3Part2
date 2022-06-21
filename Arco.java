@@ -1,4 +1,4 @@
-package Grafo;
+package Generos;
 
 import java.util.Objects;
 
@@ -55,32 +55,5 @@ public class Arco implements Comparable<Arco> {
 			return this.valor.compareTo(o.getValor());
 		}
 		
-		
-
-//	private String verticeOrigen;
-//	private String verticeDestino;
-//	private Integer etiqueta;
-//
-//	public Arco(String verticeOrigen, String verticeDestino, Integer etiqueta) {
-//		this.verticeOrigen = verticeOrigen;
-//		this.verticeDestino = verticeDestino;
-//		this.etiqueta = etiqueta;
-//	}
-//	
-//	public String getVerticeOrigen() {
-//		return verticeOrigen;
-//	}
-//	
-//	public String getVerticeDestino() {
-//		return verticeDestino;
-//	}
-//
-//	public Integer getEtiqueta() {
-//		return etiqueta;
-//	}
-//	
-//	public void sumar() {
-//		this.etiqueta++;		
-//	}
 
 }

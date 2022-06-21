@@ -1,4 +1,4 @@
-package Grafo;
+package Generos;
 
 public class Main {
 
@@ -7,14 +7,7 @@ public class Main {
 
 		GrafoDirigido g1 = new GrafoDirigido();
 		
-		g1.agregarVertice("Ficcion");
-		g1.agregarVertice("Aventura");
-	
-
-		g1.agregarArco("Ficcion", "Aventura");
-		g1.agregarArco("Ficcion", "Aventura");
-		g1.agregarArco("Ficcion", "Aventura");
-		g1.agregarArco("Ficcion", "Aventura");
+		LeeYEscribe.cargarCSVGeneros(g1);
 		
 		g1.impimir();
 		
