@@ -11,6 +11,7 @@ public class Arco implements Comparable<Arco> {
 	
 		private String destino;
 		private Integer valor = 1;
+		private String color;
 		
 		public Arco (String destino) {
 			this.destino = destino;
@@ -18,6 +19,14 @@ public class Arco implements Comparable<Arco> {
 		
 		public void sumar() {
 			this.valor++;
+		}
+		
+		public void setColor(String c) {
+			this.color = c;
+		}
+		
+		public String getColor() {
+			return this.color;
 		}
 		
 		public String getDestino() {
