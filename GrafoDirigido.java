@@ -3,6 +3,7 @@ package Generos;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 
@@ -39,40 +40,41 @@ public class GrafoDirigido implements Grafo {
 		return solucion;
 	}
 	
-	public ArrayList<Arco> secuenciaMasLarga(String Origen){
-		ArrayList<Arco> camino = new ArrayList<>();
-		ArrayList<Arco> todosLosArcos = this.obtenerArcos();
-		for (Arco arco : todosLosArcos) {
-			arco.setColor("BLANCO");
+	
+	
+	public ArrayList<String> secuenciaMasLarga(String Origen){
+		ArrayList<String> camino = new ArrayList<>();
+		ArrayList<String> adyacentes = new ArrayList<>();
+		ArrayList<Arco> aux = this.estructura.get(Origen);//agarro los arcos que dirigen a mis adyacentes
+		Collections.sort(aux, Collections.reverseOrder());
+		for (Arco arco : aux) {//agrego los destinos a mis adyacentes
+			adyacentes.add(arco.getDestino());
 		}
-		ArrayList<Arco> adyacentes = this.estructura.get(Origen);
-		Collections.sort(adyacentes, Collections.reverseOrder());
-		if (adyacentes!=null) {
-			Arco arco = adyacentes.get(0);
-		
-			while(todosLosArcos.size()!=0 && arco.getColor()=="Blanco") {
-				todosLosArcos.remove(arco);
-				camino.add(arco);
-				arco.setColor("AMARILLO");
-				ArrayList<Arco> adyacentes2 = this.estructura.get(arco.getDestino());
-				Collections.sort(adyacentes2, Collections.reverseOrder());
-				boolean tieneAdyacentes=false;
-				int i=0;
-				while (tieneAdyacentes=false && i<adyacentes2.size()) {
-					tieneAdyacentes=this.estructura.get(adyacentes2.get(i).getDestino())!=null;
-					i++;
-					//me fijo que el proximo vertice tenga adyacentes
+		HashSet<String> visitados = new HashSet<>();
+		visitados.add(Origen);
+		camino.add(Origen);
+		String v = Origen;
+		int i=0;
+		while (this.estructura.get(v)!= null) {
+			v = adyacentes.get(i);
+			if(!visitados.contains(v)) {
+				visitados.add(v);
+				camino.add(v);
+				aux = this.estructura.get(v);
+				Collections.sort(aux, Collections.reverseOrder());
+				adyacentes.clear();
+				for (Arco arco : aux) {
+					//agrego los nuevos adyacentes
+					//podría agarrar solo el primer adyacente (el arco mas pesado)
+					if (!visitados.contains(arco.getDestino()))
+						//me aseguro que agarrar vertices que no esten visitados
+						adyacentes.add(arco.getDestino());
 				}
-				if (tieneAdyacentes)
-					arco = adyacentes2.get(i);
-			}
-			if(arco.getColor()=="AMARILLO") 
-				return camino;
-			//falta sacar los arcos que no forman parte del ciclo
-		}
-		return null;
+				i=0;
+			} 
+		}	
 		
-		
+		return camino;
 	}
 
 //	@Override
