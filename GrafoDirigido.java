@@ -63,13 +63,11 @@ public class GrafoDirigido implements Grafo {
 				aux = this.estructura.get(v);
 				Collections.sort(aux, Collections.reverseOrder());
 				adyacentes.clear();
-				for (Arco arco : aux) {
-					//agrego los nuevos adyacentes
-					//podría agarrar solo el primer adyacente (el arco mas pesado)
-					if (!visitados.contains(arco.getDestino()))
-						//me aseguro que agarrar vertices que no esten visitados
-						adyacentes.add(arco.getDestino());
+				while(aux.size()>i && visitados.contains(aux.get(i).getDestino())) {
+					i++;
 				}
+				if(aux.size()>i)
+					adyacentes.add(aux.get(i).getDestino());				
 				i=0;
 			} 
 		}	
