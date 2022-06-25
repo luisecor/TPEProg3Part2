@@ -15,6 +15,12 @@ public interface Grafo {
 	// Agrega un arco con una etiqueta, que conecta el verticeId1 con el verticeId2
 	public void agregarArco(String verticeId1, String verticeId2);
 
+	public void borrarArco(String verticeId1, String verticeId2);
+
+	public void borrarVertice(String verticeId);
+
+	public boolean existeArco(String verticeId1, String verticeId2);
+
 	// Borra el arco que conecta el verticeId1 con el verticeId2
 //	public void borrarArco(String verticeId1, String verticeId2);
 //	

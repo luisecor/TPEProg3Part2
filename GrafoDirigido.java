@@ -55,41 +55,75 @@ public class GrafoDirigido implements Grafo {
 		camino.add(Origen);
 		String v = Origen;
 		int i=0;
-		while (this.estructura.get(v)!= null) {
-			v = adyacentes.get(i);
-			if(!visitados.contains(v)) {
+		while (this.estructura.get(v)!= null) {//mientras que haya adyacentes
+			v = adyacentes.get(i);//
+			if(!visitados.contains(v)) {//verifico no hacer un ciclo
 				visitados.add(v);
 				camino.add(v);
 				aux = this.estructura.get(v);
-				Collections.sort(aux, Collections.reverseOrder());
+				Collections.sort(aux, Collections.reverseOrder());//Ordeno del mas pesado al mas liviano
 				adyacentes.clear();
-				while(aux.size()>i && visitados.contains(aux.get(i).getDestino())) {
+				while(aux.size()>i && visitados.contains(aux.get(i).getDestino())) {//agarro indice del primer vertice no visitado, de mis adyacentes
 					i++;
 				}
 				if(aux.size()>i)
-					adyacentes.add(aux.get(i).getDestino());				
-				i=0;
+					adyacentes.add(aux.get(i).getDestino());//agrego solo el primer vertice (el más pesado)				
+				i=0; //vuelvo i a 0 para agarrarlo en el siguiente Loop
 			} 
 		}	
 		
 		return camino;
 	}
+	
+	public Grafo BacktrackingObtenerSubGrafo(String Origen) {
+		GrafoDirigido solucion = new GrafoDirigido();
+		HashSet<String> visitados = new HashSet<>();
+		solucion.agregarVertice(Origen);
+		this.Backtracking(solucion, Origen," ", visitados);//
+		return solucion;
+	}
 
-//	@Override
-//	public void borrarVertice(String verticeId) {
-//		if (estructura.containsKey(verticeId)) {
-//			estructura.remove(verticeId);
-//			Iterator<String> it = estructura.keySet().iterator();
-//			while (it.hasNext()) {
-//				String key = it.next();
-//				if (existeArco(key, verticeId)) {
-//					borrarArco(key, verticeId);
-//				}
-//			}
-//		}
-//		
-//
-//	}
+	private void Backtracking(GrafoDirigido solucion, String Origen, String actual, HashSet<String> visitados) {
+	
+		if(Origen==actual) {
+			return;
+			
+		} else {
+			ArrayList<Arco> ArcosAdy = this.estructura.get(actual);//FALLA EN LA PRIMERA ITERACION
+			ArrayList<String> adyacentes = new ArrayList<>();
+			for (Arco arco : ArcosAdy) {//agrego los destinos a mis adyacentes (siempre que no estén visitados)
+				if(!visitados.contains(arco.getDestino()) || arco.getDestino()==Origen)	//adyacente no visitado o es el Origen (para formar el ciclo)
+					adyacentes.add(arco.getDestino());
+			}
+			for (String ady : adyacentes) {
+				visitados.add(ady);
+				solucion.agregarVertice(ady);
+				solucion.agregarArco(actual, ady);
+				this.Backtracking(solucion, Origen, ady, visitados);
+				visitados.remove(ady);
+				solucion.borrarArco(actual, ady);
+				solucion.borrarVertice(ady);
+			}
+		}
+		return;
+		
+	}
+
+@Override
+	public void borrarVertice(String verticeId) {
+		if (estructura.containsKey(verticeId)) {
+			estructura.remove(verticeId);
+			Iterator<String> it = estructura.keySet().iterator();
+			while (it.hasNext()) {
+				String key = it.next();
+				if (existeArco(key, verticeId)) {
+					borrarArco(key, verticeId);
+				}
+			}
+		}
+		
+
+	}
 	
 
 	@Override
@@ -116,37 +150,38 @@ public class GrafoDirigido implements Grafo {
 
 	}
 	
-//
-//	@Override
-//	public void borrarArco(String verticeId1, String verticeId2) {
-//		if (this.estructura.containsKey(verticeId1)) {
-//			ArrayList<Arco> arcos = this.estructura.get(verticeId1);
-//			for (Arco arco : arcos) {
-//				if (arco.getVerticeDestino() == verticeId2) {
-//					arcos.remove(arco);
-//					return;
-//				}
-//			}
-//		}
-//
-//	}
+
+
+	@Override
+	public void borrarArco(String verticeId1, String verticeId2) {
+		if (this.estructura.containsKey(verticeId1)) {
+			ArrayList<Arco> arcos = this.estructura.get(verticeId1);
+			for (Arco arco : arcos) {
+				if (arco.getVerticeDestino() == verticeId2) {
+					arcos.remove(arco);
+					return;
+				}
+			}
+		}
+
+	}
 //
 //	@Override
 //	public boolean contieneVertice(String verticeId) {
 //		return this.estructura.containsKey(verticeId);
 //	}
 //
-//	@Override
-//	public boolean existeArco(String verticeId1, String verticeId2) {
-//		if (this.estructura.containsKey(verticeId1)) {
-//			ArrayList<Arco> arcos = this.estructura.get(verticeId1);
-//			for (Arco arco : arcos) {
-//				if (arco.getVerticeDestino() == verticeId2)
-//					return true;
-//			}
-//		}
-//		return false;
-//	}
+	@Override
+	public boolean existeArco(String verticeId1, String verticeId2) {
+		if (this.estructura.containsKey(verticeId1)) {
+			ArrayList<Arco> arcos = this.estructura.get(verticeId1);
+			for (Arco arco : arcos) {
+				if (arco.getVerticeDestino() == verticeId2)
+					return true;
+			}
+		}
+		return false;
+	}
 //
 //	@Override
 //	public Arco obtenerArco(String verticeId1, String verticeId2) {
