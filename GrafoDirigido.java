@@ -49,50 +49,38 @@ public class GrafoDirigido implements Grafo {
 	
 	
 	public ArrayList<Arco> secuenciaMasLarga(String Origen){
+		//Guardo en caminos la solucion
 		ArrayList<Arco> camino = new ArrayList<>();
-		ArrayList<Arco> adyacentes = new ArrayList<>();
 		
-		//Lista de Arcos Adyacentes 
-		ArrayList<Arco> aux = this.estructura.get(Origen);
+		//Lista de Arcos Adyacentes al Origen
+		ArrayList<Arco> adyacentes = this.estructura.get(Origen);
 		
-		//agrego los destinos a mis adyacentes
-		for (Arco arco : aux) {
-			adyacentes.add(arco);
-		}
+		//Los arcos ya estan ordenados por el peso, por lo que 
+		//la condicion GREEDY que tomamos es siempre el vertice 
+		//con mayor peso
 		
 		HashSet<String> visitados = new HashSet<>();
 		visitados.add(Origen);
-		Arco or = new Arco(Origen);
-		camino.add(or);
-		Arco v = or;
-		int i=0;
-		while (this.estructura.get(v.getDestino())!= null) {
+		
+		//Tomo el 1er vertice de adyacentes que sera el primer valor de la solucion
+		camino.add(adyacentes.get(0));
+		
+		//Me paro en el siguiente vertice y lo marco como visitado
+		Arco siguiente = adyacentes.get(0);
+		visitados.add(siguiente.getDestino());
+		
+		//Greedy---->
+		
+		Iterator<Arco> it = adyacentes.iterator();
+		while (it.hasNext()) {
+			Arco arcoTmp = it.next();
+			if (!visitados.contains(arcoTmp.getDestino())) {
+				visitados.add(arcoTmp.getDestino());
+				camino.add(arcoTmp);
+				it = this.estructura.get(arcoTmp.getDestino()).iterator();
+			}
 			
-			//mientras que haya adyacentes
-			v = adyacentes.get(i);
-			
-			//verifico no hacer un ciclo
-			if(!visitados.contains(v.getDestino())) {
-				visitados.add(v.getDestino());
-				camino.add(v);
-				aux = this.estructura.get(v.getDestino());
-				
-				//Ordeno del mas pesado al mas liviano
-				Collections.sort(aux, Collections.reverseOrder());
-				adyacentes.clear();
-				
-				//agarro indice del primer vertice no visitado, de mis adyacentes
-				while(aux.size()>i && !visitados.contains(aux.get(i).getDestino())) {
-					i++;
-				}
-				
-				//agrego solo el primer vertice (el más pesado)
-				if(aux.size()>i) adyacentes.add(aux.get(i));					
-				
-				//vuelvo i a 0 para agarrarlo en el siguiente Loop
-				i=0; 
-			} 
-		}	
+		}
 		
 		return camino;
 	}

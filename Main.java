@@ -20,7 +20,7 @@ public class Main {
 		System.out.println(g1.secuenciaMasLarga("investigacion"));
 		
 		g1.secuenciaMasLarga("investigacion").forEach((k) ->{
-			System.out.println( k.getVerticeDestino() );
+			System.out.print( k.getVerticeDestino() +" ");
 		});;
 		
 		
