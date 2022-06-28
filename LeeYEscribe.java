@@ -22,7 +22,7 @@ public class LeeYEscribe {
 	}
 	
 	public static void cargarCSVGeneros(GrafoDirigido grafo/*, String csvFile*/) {
-		String csvFile = ".\\assets\\dataset4.csv";
+		String csvFile = ".\\assets\\dataset3.csv";
         String line = "";
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
         	int fila = 0;
@@ -30,7 +30,7 @@ public class LeeYEscribe {
         	System.out.println("Generando Estructura");
             while ((line = br.readLine()) != null) {            	
             	if (fila>0) {
-//            		System.out.println(fila);
+          
 		                String[] items = line.split(",");
 
 		                int index = 0;
@@ -41,23 +41,15 @@ public class LeeYEscribe {
 		                	grafo.agregarArco(items[index],items[index+1]);
 		                	index++;
 		                }
-//		                String[] generos = items[3].split(" ");
-//
-//		                for (String genero : generos) {
-//		                	Genero tmp = new Genero(genero);		// Creo el genero
-//		                	libro.addGenero(genero); 				// Se lo agrego al libro
-//							this.addGeneroOrdenado(tmp); 			// Agrego el Genero Nuevo a la bilioteca
-//							this.agregarLibroAGenero(tmp, libro);	// Agrego el Libro al Genero de la Biblioteca
-//						}
-//		                libros.add(libro);       
             	}
             	fila++ ;
             }
-            System.out.println("Fila: " + fila);
+         
         } catch (IOException e) {
             e.printStackTrace();
         }
         System.out.println("--------------------------------");
+        grafo.ordenarArcos();
 	}
 	
 	
